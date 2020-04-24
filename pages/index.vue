@@ -3,16 +3,19 @@
     <div>
       <logo />
       <h1 class="title">pupusas2go</h1>
+      <app-featured-products />
     </div>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import Logo from '~/components/Logo.vue';
+import AppFeaturedProducts from "~/components/AppFeaturedProducts.vue";
 
 export default {
   components: {
-    Logo
+    Logo,
+    AppFeaturedProducts
   }
 }
 </script>
