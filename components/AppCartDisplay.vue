@@ -8,21 +8,24 @@
           <th>Quantity</th>
           <th>Total</th>
         </tr>
-        <tr v-for="item in cart" :key="item.id">
+        <tr v-for="product in cart" :key="product.id">
           <td>
             <!-- <img :src="`/products/${item.img}`" :alt="item.name" class="productimg" /> -->
-            <h3 class="productname">{{ item.name }}</h3>
+            <h3 class="productname">{{ product.name }}</h3>
           </td>
           <td>
-            <h4 class="price">${{ item.price }}</h4>
+            <strong>{{ product.price | dollar }}</strong>
           </td>
           <td>
-            <strong>{{ item.quantity }}</strong>
+            <button class="update-num" @click="minusQty(product)">-</button>
+              <input type="number" v-model="product.quantity" disabled/>
+            <button class="update-num" @click="plusQty(product)">+</button>
           </td>
-          <td>${{ item.quantity * item.price }}</td>
+          <td>
+            <h4>{{ product.quantity * product.price | dollar }}</h4>
+          </td>
         </tr>
       </table>
-      <p>You added an Item. Yes!</p>
 
       <section class="payment">
         <app-card />
@@ -36,10 +39,10 @@
           </div>
           <div class="num">
             <p>
-              <strong>${{ cartTotal }}</strong>
+              <strong>{{ cartTotal | dollar }}</strong>
             </p>
             <p>Free Shipping</p>
-            <p class="golden">${{ cartTotal }}</p>
+            <p class="golden">{{ cartTotal | dollar }}</p>
           </div>
         </div>
       </section>
@@ -47,10 +50,11 @@
 
     <section v-else class="center">
       <p>Your cart is empty, fill it up!</p>
-      <button class="pay-with-stripe">
-        <nuxt-link exact to="/">Back Home</nuxt-link>
-      </button>
     </section>
+
+    <button class="pay-with-stripe">
+      <nuxt-link exact to="/">Back Home</nuxt-link>
+    </button>
   </div>
 </template>
 
@@ -66,6 +70,31 @@ export default {
   computed: {
     ...mapState(["cart"]),
     ...mapGetters(["cartCount", "cartTotal"])
+  },
+  data() {
+    return {
+      tempcart: []
+    };
+  },
+  methods: {
+    plusQty(product){
+      var amount = product.quantity;
+      amount++;
+      this.cartUpdate(product, amount);
+    },
+    minusQty(product){
+        var amount = product.quantity;
+        amount--;
+        if (amount < 0) {
+            amount = 0;
+        }
+        this.cartUpdate(product, amount);
+    },
+    cartUpdate(product, amount) {
+        product.quantity = amount;
+        this.tempcart.push(product);
+        this.$store.commit("addToCart", {...product});
+    }
   }
 };
 </script>

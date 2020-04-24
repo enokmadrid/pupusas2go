@@ -4,7 +4,7 @@
       <div class="item" v-for="product in featuredProducts" :key="product.id">
         <!-- <img :src="`/products/${product.img}`" /> -->
         <h3>{{ product.name }}</h3>
-        <h4>${{ product.price }}</h4>
+        <h4>{{ product.price | dollar }}</h4>
         <button class="button purchase" @click="cartAdd(product)">Add to Cart</button>
       </div>
     </div>
