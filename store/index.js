@@ -1,15 +1,18 @@
 import axios from "axios"
 import uuidv1 from "uuid/v1"
-import data from "~/static/storedata.json"
+
+let url = 'https://api-us-west-2.graphcms.com/v2/ck9ewri0n0ao001zbcneq5dkk/master';
 
 export const state = () => ({
   cartUIStatus: "idle",
-  storedata: data,
+  storedata: {},
   cart: []
 })
 
 export const getters = {
-  featuredProducts: state => state.storedata.slice(0, 3),
+  featuredProducts: state => {
+    return state.storedata.products.slice(0, 3);
+  },
   cartCount: state => {
     if (!state.cart.length) return 0
     return state.cart.reduce((ac, next) => ac + next.quantity, 0)
@@ -21,6 +24,9 @@ export const getters = {
 }
 
 export const mutations = {
+  updateProducts: (state, payload) => {
+    state.storedata = payload;
+  },
   updateCartUI: (state, payload) => {
     state.cartUIStatus = payload
   },
@@ -53,6 +59,29 @@ export const actions = {
   },
   decrement({ commit, dispatch, getters }) {
     commit('decrementQuantity')
+  },
+  async nuxtServerInit({ commit }) {
+    await axios({
+      method: 'post',
+      url: url,
+      data: {
+        query: `
+          query {
+            products {
+              id,
+              name,
+              description,
+              price,
+              published
+            }
+          }
+        `
+      }
+    }).then(response => {
+      const data = response.data.data;
+      this.state.storedata = data;
+      commit('updateProducts', data);
+    });
   },
   async postStripeFunction({ getters, commit }, payload) {
     commit("updateCartUI", "loading")

@@ -1,0 +1,9 @@
+query {
+  products {
+    id,
+    name,
+    description,
+    price,
+    published
+  }
+}
