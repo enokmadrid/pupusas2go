@@ -51,10 +51,7 @@
     <section v-else class="center">
       <p>Your cart is empty, fill it up!</p>
     </section>
-
-    <button class="pay-with-stripe">
-      <nuxt-link exact to="/">Back Home</nuxt-link>
-    </button>
+    <nuxt-link class="btn btn-secondary" exact to="/">Continue Shopping</nuxt-link>
   </div>
 </template>
 
@@ -78,22 +75,10 @@ export default {
   },
   methods: {
     plusQty(product){
-      var amount = product.quantity;
-      amount++;
-      this.cartUpdate(product, amount);
+      this.$store.commit('incrementQuantity', product);
     },
     minusQty(product){
-        var amount = product.quantity;
-        amount--;
-        if (amount < 0) {
-            amount = 0;
-        }
-        this.cartUpdate(product, amount);
-    },
-    cartUpdate(product, amount) {
-        product.quantity = amount;
-        this.tempcart.push(product);
-        this.$store.commit("addToCart", {...product});
+        this.$store.commit('decrementQuantity', product);
     }
   }
 };
@@ -150,7 +135,6 @@ h1 {
 }
 
 button a {
-  color: white;
   transition: 0.3s all ease;
 }
 

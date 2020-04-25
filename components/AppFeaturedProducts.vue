@@ -5,7 +5,7 @@
         <!-- <img :src="`/products/${product.img}`" /> -->
         <h3>{{ product.name }}</h3>
         <h4>{{ product.price | dollar }}</h4>
-        <button class="button purchase" @click="cartAdd(product)">Add to Cart</button>
+        <button class="btn btn-primary" @click="cartAdd(product)">Add to Cart</button>
       </div>
     </div>
   </section>
@@ -28,21 +28,11 @@ export default {
   },
   methods: {
     cartAdd(product) {        
-
-        console.log(product.name);
-        
-        // product.quantity = this.quantityUpdate();
-        // product.quantity = 5;
-
-        // console.log(product.name, " Quantity is: ", product.quantity);
         product.quantity = 1;
         this.tempcart.push(product);
         this.$store.commit("addToCart", {...product});
     }
-  },
-  components: {
-        // AppCounter
-    }
+  }
 };
 </script>
 
@@ -66,12 +56,13 @@ section {
 }
 
 h4 {
-  color: #d96528;
+  color: #000000;
+  font-weight: 700;
   margin: 10px 0;
 }
 
 h2 {
-  color: #d96528;
+  color: #3533d6;
   text-align: center;
   overflow: hidden;
 }
@@ -85,7 +76,7 @@ h2 span:before {
   display: block;
   height: 1px;
   width: 1000px;
-  background: #e6baa4;
+  background: #ffffff;
   position: absolute;
   top: 50%;
 }

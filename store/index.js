@@ -33,10 +33,27 @@ export const mutations = {
     itemfound
       ? (itemfound.quantity += payload.quantity)
       : state.cart.push(payload)
+  },
+  incrementQuantity: (state, payload) => {
+    let itemfound = state.cart.find(el => el.id === payload.id)
+    itemfound.quantity++
+  },
+  decrementQuantity: (state, payload) => {
+    let itemfound = state.cart.find(el => el.id === payload.id)
+    itemfound.quantity--
+    if (itemfound.quantity < 0) {
+      itemfound.quantity = 0;
+    }
   }
 }
 
 export const actions = {
+  increment({ commit, dispatch, getters }) {
+    commit('incrementQuantity')
+  },
+  decrement({ commit, dispatch, getters }) {
+    commit('decrementQuantity')
+  },
   async postStripeFunction({ getters, commit }, payload) {
     commit("updateCartUI", "loading")
 
