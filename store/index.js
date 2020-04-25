@@ -1,18 +1,18 @@
 import axios from "axios"
 import uuidv1 from "uuid/v1"
+import query from "./../graphql/products.gql"
 
-let url = 'https://api-us-west-2.graphcms.com/v2/ck9ewri0n0ao001zbcneq5dkk/master';
+const url = 'https://api-us-west-2.graphcms.com/v2/ck9ewri0n0ao001zbcneq5dkk/master';
+const productsQuery = query.loc.source.body;
 
 export const state = () => ({
   cartUIStatus: "idle",
-  storedata: {},
+  storedata: [],
   cart: []
 })
 
 export const getters = {
-  featuredProducts: state => {
-    return state.storedata.products.slice(0, 3);
-  },
+  featuredProducts: state => state.storedata.products,
   cartCount: state => {
     if (!state.cart.length) return 0
     return state.cart.reduce((ac, next) => ac + next.quantity, 0)
@@ -24,7 +24,7 @@ export const getters = {
 }
 
 export const mutations = {
-  updateProducts: (state, payload) => {
+  setProducts: (state, payload) => {
     state.storedata = payload;
   },
   updateCartUI: (state, payload) => {
@@ -61,26 +61,12 @@ export const actions = {
     commit('decrementQuantity')
   },
   async nuxtServerInit({ commit }) {
-    await axios({
-      method: 'post',
-      url: url,
-      data: {
-        query: `
-          query {
-            products {
-              id,
-              name,
-              description,
-              price,
-              published
-            }
-          }
-        `
-      }
+    await axios.post(url, {
+      query: productsQuery
     }).then(response => {
       const data = response.data.data;
       this.state.storedata = data;
-      commit('updateProducts', data);
+      commit('setProducts', data);
     });
   },
   async postStripeFunction({ getters, commit }, payload) {
