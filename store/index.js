@@ -54,10 +54,10 @@ export const mutations = {
 }
 
 export const actions = {
-  increment({ commit, dispatch, getters }) {
+  increment({ commit }) {
     commit('incrementQuantity')
   },
-  decrement({ commit, dispatch, getters }) {
+  decrement({ commit }) {
     commit('decrementQuantity')
   },
   async nuxtServerInit({ commit }) {
