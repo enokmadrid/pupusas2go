@@ -80,6 +80,8 @@ export const actions = {
           {
             stripeEmail: payload.stripeEmail,
             stripeName: payload.stripeName,
+            stripePhone: payload.stripePhone,
+            stripeAddress: payload.stripeAddress,
             stripeAmt: Math.floor(getters.cartTotal * 100), //it expects the price in cents, as an integer
             stripeToken: "tok_visa", //testing token, later we would use payload.data.token
             stripeIdempotency: uuidv4() //we use this library to create a unique id

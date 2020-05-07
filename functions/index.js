@@ -38,6 +38,7 @@ exports.handler = async (event, context) => {
         name: data.stripeName,
         email: data.stripeEmail,
         phone: data.stripePhone,
+        shipping: data.stripeShipping,
         source: data.stripeToken
       })
       .then(customer => {

@@ -80,7 +80,7 @@ export default {
           state: 'Nevada'
         }
       }
-    };
+    }
   },
   methods: {
     pay() {
