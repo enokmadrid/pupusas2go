@@ -1,17 +1,18 @@
-require("dotenv").config();
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+require('dotenv').config();
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const headers = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "Content-Type"
+  'Access-Control-Allow-Origin': 'http://localhost',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Methods': 'GET, POST'
 };
 
 exports.handler = async (event, context) => {
-  if (!event.body || event.httpMethod !== "POST") {
+  if (!event.body || event.httpMethod !== 'POST') {
     return {
       statusCode: 400,
       headers,
       body: JSON.stringify({
-        status: "invalid http method"
+        status: 'invalid http method'
       })
     }
   }
