@@ -3,15 +3,15 @@
     <div v-if="cartUIStatus === 'idle'" class="payment">
       <h3>Please enter your payment details:</h3>
       <label for="name">Full Name</label>
-      <br />
       <input id="name" type="text" v-model="stripeName" placeholder="First and Last name" required/>
       <br />
       <label for="email">Email</label>
-      <br />
       <input id="email" type="email" v-model="stripeEmail" placeholder="name@example.com" required/>
       <br />
-      <label for="card">Credit Card</label>
+      <label for="phone">Phone Number</label>
+      <input id="phone" type="number" v-model="stripePhone" placeholder="" required/>
       <br />
+      <label for="card">Credit Card</label>
       <small>
         Test using this credit card:
         <span class="cc-number">4242 4242 4242 4242</span>, and enter any 5 digits for the zip code
@@ -67,9 +67,9 @@ export default {
         // you can configure that cc element. I liked the default, but you can
         // see https://stripe.com/docs/stripe.js#element-options for details
       },
-      stripeEmail: "",
-      stripeName: "",
-      stripePhone: "7027857864",
+      stripeEmail: '',
+      stripeName: '',
+      stripePhone: '',
       stripeShipping: {
         address: {
           line1: '721 Garrison St',
