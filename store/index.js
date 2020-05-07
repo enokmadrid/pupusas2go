@@ -79,6 +79,7 @@ export const actions = {
           netlifyFunction,
           {
             stripeEmail: payload.stripeEmail,
+            stripeName: payload.stripeName,
             stripeAmt: Math.floor(getters.cartTotal * 100), //it expects the price in cents, as an integer
             stripeToken: "tok_visa", //testing token, later we would use payload.data.token
             stripeIdempotency: uuidv4() //we use this library to create a unique id
@@ -86,7 +87,6 @@ export const actions = {
           {
             headers: {
               "Content-Type": "application/json",
-              "Access-Control-Allow-Origin": "http://localhost",
             }
           }
         )

@@ -1,9 +1,8 @@
 require('dotenv').config();
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const headers = {
-  'Access-Control-Allow-Origin': 'http://localhost:3000',
+  'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Content-Type',
-  'Access-Control-Allow-Methods': 'GET, POST'
 };
 
 exports.handler = async (event, context) => {
@@ -36,7 +35,9 @@ exports.handler = async (event, context) => {
   try {
     await stripe.customers
       .create({
+        name: data.stripeName,
         email: data.stripeEmail,
+        phone: data.stripePhone,
         source: data.stripeToken
       })
       .then(customer => {

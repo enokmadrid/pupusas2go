@@ -2,9 +2,13 @@
   <div id="app">
     <div v-if="cartUIStatus === 'idle'" class="payment">
       <h3>Please enter your payment details:</h3>
+      <label for="name">Full Name</label>
+      <br />
+      <input id="name" type="text" v-model="stripeName" placeholder="First and Last name" required/>
+      <br />
       <label for="email">Email</label>
       <br />
-      <input id="email" type="email" v-model="stripeEmail" placeholder="name@example.com" />
+      <input id="email" type="email" v-model="stripeEmail" placeholder="name@example.com" required/>
       <br />
       <label for="card">Credit Card</label>
       <br />
@@ -63,13 +67,18 @@ export default {
         // you can configure that cc element. I liked the default, but you can
         // see https://stripe.com/docs/stripe.js#element-options for details
       },
-      stripeEmail: ""
+      stripeEmail: "",
+      stripeName: "",
     };
   },
   methods: {
     pay() {
       createToken().then(data => {
-        const stripeData = { data, stripeEmail: this.stripeEmail };
+        const stripeData = { 
+          data, 
+          stripeEmail: this.stripeEmail, 
+          stripeName: this.stripeName,
+        };
         this.$store.dispatch("postStripeFunction", stripeData);
       });
     },
