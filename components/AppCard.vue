@@ -69,6 +69,17 @@ export default {
       },
       stripeEmail: "",
       stripeName: "",
+      stripePhone: "7027857864",
+      stripeShipping: {
+        address: {
+          line1: '721 Garrison St',
+          line2: 'apt 608',
+          city: 'Las Vegas',
+          country: 'US',
+          postal_code: '89107',
+          state: 'Nevada'
+        }
+      }
     };
   },
   methods: {
@@ -112,6 +123,6 @@ button {
 }
 
 .stripe-card.complete {
-  border-color: green;
+  border: 2px solid green;
 }
 </style> 
