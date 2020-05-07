@@ -1,5 +1,5 @@
 import axios from "axios"
-import uuidv1 from "uuid/v1"
+import { v4 as uuidv4 } from 'uuid';
 import query from "./../graphql/products.gql"
 
 const url = 'https://api-us-west-2.graphcms.com/v2/ck9ewri0n0ao001zbcneq5dkk/master';
@@ -80,7 +80,7 @@ export const actions = {
             stripeEmail: payload.stripeEmail,
             stripeAmt: Math.floor(getters.cartTotal * 100), //it expects the price in cents, as an integer
             stripeToken: "tok_visa", //testing token, later we would use payload.data.token
-            stripeIdempotency: uuidv1() //we use this library to create a unique id
+            stripeIdempotency: uuidv4() //we use this library to create a unique id
           },
           {
             headers: {
