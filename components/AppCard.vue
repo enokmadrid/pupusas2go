@@ -4,13 +4,28 @@
       <h3>Please enter your payment details:</h3>
       <label for="name">Full Name</label>
       <input id="name" type="text" v-model="stripeName" placeholder="First and Last name" required/>
-      <br />
+      <br /><br />
       <label for="email">Email</label>
       <input id="email" type="email" v-model="stripeEmail" placeholder="name@example.com" required/>
-      <br />
+      <br /><br />
       <label for="phone">Phone Number</label>
       <input id="phone" type="number" v-model="stripePhone" placeholder="" required/>
-      <br />
+      <br /><br />
+      <label for="address">Delivery Address</label>
+      <input id="address" type="text" v-model="line1" placeholder="" required/>
+      <br /><br />
+      <label for="address2">Address Line 2</label>
+      <input id="address2" type="text" v-model="line2" placeholder="" required/>
+      <br /><br />
+      <label for="city">City</label>
+      <input id="city" type="text" v-model="city" placeholder="" required/>
+      <br /><br />
+      <label for="state">State</label>
+      <input id="state" type="text" v-model="state" placeholder="" required/>
+      <br /><br />
+      <label for="zip">Zip code</label>
+      <input id="zip" type="number" v-model="postal_code" placeholder="" required/>
+      <br /><br />
       <label for="card">Credit Card</label>
       <small>
         Test using this credit card:
@@ -70,16 +85,12 @@ export default {
       stripeEmail: '',
       stripeName: '',
       stripePhone: '',
-      stripeShipping: {
-        address: {
-          line1: '721 Garrison St',
-          line2: 'apt 608',
-          city: 'Las Vegas',
-          country: 'US',
-          postal_code: '89107',
-          state: 'Nevada'
-        }
-      }
+      line1: '',
+      line2: '',
+      city: '',
+      country: '',
+      postal_code: '',
+      state: ''
     }
   },
   methods: {
@@ -90,7 +101,14 @@ export default {
           stripeEmail: this.stripeEmail, 
           stripeName: this.stripeName,
           stripePhone: this.stripePhone,
-          stripeShipping: this.stripeShipping
+          stripeAddress: {
+              line1: this.line1,
+              line2: this.line2,
+              city: this.city,
+              country: this.country,
+              postal_code: this.postal_code,
+              state: this.state
+          }
         };
         this.$store.dispatch("postStripeFunction", stripeData);
       });
