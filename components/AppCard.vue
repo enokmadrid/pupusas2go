@@ -89,6 +89,8 @@ export default {
           data, 
           stripeEmail: this.stripeEmail, 
           stripeName: this.stripeName,
+          stripePhone: this.stripePhone,
+          stripeShipping: this.stripeShipping
         };
         this.$store.dispatch("postStripeFunction", stripeData);
       });
