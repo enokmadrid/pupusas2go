@@ -1,7 +1,7 @@
 require('dotenv').config();
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const headers = {
-  'Access-Control-Allow-Origin': 'http://localhost:3000/cart',
+  'Access-Control-Allow-Origin': 'http://localhost:3000',
   'Access-Control-Allow-Headers': 'Content-Type',
   'Access-Control-Allow-Methods': 'GET, POST'
 };
