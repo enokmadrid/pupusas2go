@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import query from "./../graphql/products.gql"
 
 const url = 'https://api-us-west-2.graphcms.com/v2/ck9ewri0n0ao001zbcneq5dkk/master';
+const netlifyFunction = 'https://pupusas2go.netlify.app/.netlify/functions/index';
 const productsQuery = query.loc.source.body;
 
 export const state = () => ({
@@ -75,7 +76,7 @@ export const actions = {
     try {
       await axios
         .post(
-          "https://ecommerce-netlify.netlify.com/.netlify/functions/index",
+          netlifyFunction,
           {
             stripeEmail: payload.stripeEmail,
             stripeAmt: Math.floor(getters.cartTotal * 100), //it expects the price in cents, as an integer
