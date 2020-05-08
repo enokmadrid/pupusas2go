@@ -4,6 +4,7 @@
       <ul>
         <li>
           <span class="carttotal" v-if="cartCount > 0">{{ cartCount }}</span>
+          <nuxt-link to="/">Home</nuxt-link>
           <nuxt-link to="/cart">Cart</nuxt-link>
         </li>
       </ul>

@@ -33,6 +33,7 @@ export const mutations = {
   },
   clearCart: state => {
     //this clears the cart
+    console.log("Clear Cart!");
     ;(state.cart = []), (state.cartUIStatus = "idle")
   },
   addToCart: (state, payload) => {
@@ -60,6 +61,9 @@ export const actions = {
   },
   decrement({ commit }) {
     commit('decrementQuantity')
+  },
+  emptyCart({ commit }) {
+    commit('clearCart')
   },
   async nuxtServerInit({ commit }) {
     await axios.post(url, {

@@ -56,9 +56,6 @@ export default {
     filteredprice() {
       return this.data.filter(el => el.price < this.pricerange);
     }
-  },
-  components: {
-    StarRating
   }
 };
 </script>
@@ -95,6 +92,5 @@ aside {
 
 .max {
   display: inline-block;
-  float: right;
 }
 </style>

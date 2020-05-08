@@ -1,6 +1,9 @@
 <template>
   <div>
     <section v-if="cartCount > 0">
+      
+      <button class="btn btn-danger float-right" @click="clearCart">Clear your cart</button>
+
       <table>
         <tr>
           <th>Product</th>
@@ -50,15 +53,15 @@
 
     <section v-else class="center">
       <p>Your cart is empty, fill it up!</p>
+      <nuxt-link class="btn btn-primary" exact to="/">Continue Shopping</nuxt-link>
     </section>
-    <nuxt-link class="btn btn-secondary" exact to="/">Continue Shopping</nuxt-link>
+
   </div>
 </template>
 
 <script>
 import AppCard from "~/components/AppCard.vue";
-import { mapState } from "vuex";
-import { mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   components: {
@@ -79,6 +82,10 @@ export default {
     },
     minusQty(product){
         this.$store.commit('decrementQuantity', product);
+    },
+    clearCart() {
+      this.complete = false;
+      this.$store.commit("clearCart");
     }
   }
 };
@@ -134,7 +141,8 @@ h1 {
   text-align: right;
 }
 
-button a {
+.btn {
+  margin-top: 20px;
   transition: 0.3s all ease;
 }
 
@@ -143,10 +151,6 @@ button a {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-column-gap: 100px;
-  }
-
-  .total {
-    width: 90%;
   }
 }
 
