@@ -4,28 +4,28 @@
       <h3>Please enter your payment details:</h3>
       <label for="name">Full Name</label>
       <input id="name" type="text" v-model="stripeName" placeholder="First and Last name" required/>
-      <br /><br />
+
       <label for="email">Email</label>
       <input id="email" type="email" v-model="stripeEmail" placeholder="name@example.com" required/>
-      <br /><br />
+
       <label for="phone">Phone Number</label>
       <input id="phone" type="number" v-model="stripePhone" placeholder="" required/>
-      <br /><br />
+
       <label for="address">Delivery Address</label>
       <input id="address" type="text" v-model="line1" placeholder="" required/>
-      <br /><br />
+
       <label for="address2">Address Line 2</label>
       <input id="address2" type="text" v-model="line2" placeholder="" required/>
-      <br /><br />
+
       <label for="city">City</label>
-      <input id="city" type="text" v-model="city" placeholder="" required/>
-      <br /><br />
+      <input id="city" type="text" v-model="city" disabled/>
+
       <label for="state">State</label>
-      <input id="state" type="text" v-model="state" placeholder="" required/>
-      <br /><br />
+      <input id="state" type="text" v-model="state" disabled/>
+
       <label for="zip">Zip code</label>
-      <input id="zip" type="number" v-model="postal_code" placeholder="" required/>
-      <br /><br />
+      <input id="zip" type="number" v-model="postal_code" required/>
+
       <label for="card">Credit Card</label>
       <small>
         Test using this credit card:
@@ -40,9 +40,9 @@
         @change="complete = $event.complete"
       />
       <button
-        class="pay-with-stripe button"
+        class="pay-with-stripe btn btn-primary"
         @click="pay"
-        :disabled="!complete || !stripeEmail"
+        :disabled="!complete || !(stripeEmail && stripeName && stripePhone && line1 && city && state && postal_code)"
       >Pay with credit card</button>
     </div>
 
@@ -87,10 +87,10 @@ export default {
       stripePhone: '',
       line1: '',
       line2: '',
-      city: '',
-      country: '',
+      city: 'Las Vegas',
+      country: 'US',
       postal_code: '',
-      state: ''
+      state: 'Nevada'
     }
   },
   methods: {
@@ -111,11 +111,7 @@ export default {
           }
         };
         this.$store.dispatch("postStripeFunction", stripeData);
-      });
-    },
-    clearCart() {
-      this.complete = false;
-      this.$store.commit("clearCartCount");
+      })
     }
   }
 };
@@ -123,12 +119,19 @@ export default {
  
 <style lang="scss" scoped>
 input,
-button {
+.btn {
   width: 100%;
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 
-button {
+.btn, label {
   margin-top: 20px;
+}
+
+input {
+  height: 36px;
 }
 
 .payment {
