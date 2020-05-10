@@ -1,10 +1,12 @@
-import axios from "axios"
-import { v4 as uuidv4 } from 'uuid';
-import query from "./../graphql/products.gql"
+import axios from 'axios'
+import { v4 as uuidv4 } from 'uuid'
+import products from './../graphql/products.gql'
+import * as gql from 'gql-query-builder'
+import mutation from 'gql-query-builder'
 
-const url = 'https://api-us-west-2.graphcms.com/v2/ck9ewri0n0ao001zbcneq5dkk/master';
+const graphcmsEndpoint = 'https://api-us-west-2.graphcms.com/v2/ck9ewri0n0ao001zbcneq5dkk/master';
 const netlifyFunction = 'https://pupusas2go.netlify.app/.netlify/functions/index';
-const productsQuery = query.loc.source.body;
+const productsQuery = products.loc.source.body;
 
 export const state = () => ({
   cartUIStatus: "idle",
@@ -33,7 +35,6 @@ export const mutations = {
   },
   clearCart: state => {
     //this clears the cart
-    console.log("Clear Cart!");
     ;(state.cart = []), (state.cartUIStatus = "idle")
   },
   addToCart: (state, payload) => {
@@ -66,7 +67,7 @@ export const actions = {
     commit('clearCart')
   },
   async nuxtServerInit({ commit }) {
-    await axios.post(url, {
+    await axios.post(graphcmsEndpoint, {
       query: productsQuery
     }).then(response => {
       const data = response.data.data;
@@ -80,6 +81,8 @@ export const actions = {
     try {
       await axios
         .post(
+          //TODO: Create graphCMS Customer First
+          // Use the Customer Info to create Stripe Charge
           netlifyFunction,
           {
             stripeEmail: payload.stripeEmail,
