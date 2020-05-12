@@ -2,7 +2,7 @@ require('dotenv').config();
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const headers = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
 };
 
 exports.handler = async (event, context) => {

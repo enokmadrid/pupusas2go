@@ -4,14 +4,14 @@ import products from './../graphql/products.gql'
 import newOrder from './../graphql/newOrder.gql'
 
 const graphcmsEndpoint = 'https://api-us-west-2.graphcms.com/v2/ck9ewri0n0ao001zbcneq5dkk/master';
-const netlifyFunction = 'https://pupusas2go.netlify.app/.netlify/functions/index';
+const netlifyFunction = 'https://www.pupusas2go.com/.netlify/functions/index';
 const productsQuery = products.loc.source.body;
 const orderQuery = newOrder.loc.source.body;
 const stripeHeaders = {
   headers: {
     "Content-Type": "application/json",
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
   }
 };
 
@@ -146,7 +146,10 @@ export const actions = {
             setTimeout(() => commit("updateCartUI", "idle"), 5000) // allow them to try again
           }
           console.log(JSON.stringify(res, null, 2));
-        }).catch(err => console.log(err));
+        }).catch(err => {
+          commit("updateCartUI", "failure")
+          console.log(err);
+        });
 
 
       //TODO: CREATE THE ORDER
