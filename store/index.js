@@ -7,19 +7,11 @@ const graphcmsEndpoint = 'https://api-us-west-2.graphcms.com/v2/ck9ewri0n0ao001z
 const netlifyFunction = 'https://pupusas2go.netlify.app/.netlify/functions/index';
 const productsQuery = products.loc.source.body;
 const orderQuery = newOrder.loc.source.body;
-
-// const stripeData = {
-//   stripeEmail: payload.stripeEmail,
-//   stripeName: payload.stripeName,
-//   stripePhone: payload.stripePhone,
-//   stripeAddress: payload.stripeAddress,
-//   stripeAmt: Math.floor(getters.cartTotal * 100), //it expects the price in cents, as an integer
-//   stripeToken: "tok_visa", //testing token, later we would use payload.data.token
-//   stripeIdempotency: uuidv4() //we use this library to create a unique id
-// };
 const stripeHeaders = {
   headers: {
     "Content-Type": "application/json",
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
   }
 };
 
