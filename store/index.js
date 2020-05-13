@@ -138,18 +138,18 @@ export const actions = {
       //TODO: USE CUSTOMER INFO to to CHARGE STRIPE
       await axios.post(netlifyFunction, stripeData, stripeHeaders)
       .then(res => {
-          if (res.status === 200) {
-            commit("updateCartUI", "success")
-            setTimeout(() => commit("clearCart"), 5000)
-          } else {
-            commit("updateCartUI", "failure")
-            setTimeout(() => commit("updateCartUI", "idle"), 5000) // allow them to try again
-          }
-          console.log(JSON.stringify(res, null, 2));
-        }).catch(err => {
+        if (res.status === 200) {
+          commit("updateCartUI", "success")
+          setTimeout(() => commit("clearCart"), 5000)
+        } else {
           commit("updateCartUI", "failure")
-          console.log(err);
-        });
+          setTimeout(() => commit("updateCartUI", "idle"), 5000) // allow them to try again
+        }
+        console.log(JSON.stringify(res, null, 2));
+      }).catch(error => {
+        commit("updateCartUI", "failure");
+        throw error;
+      });
 
 
       //TODO: CREATE THE ORDER
@@ -163,16 +163,15 @@ export const actions = {
           order: order.id
         };
         commit('setCustomer', newCustomer);
-      }).catch(err => console.log(err));
-  
-      console.log(order);
-      console.log(order.customerName);
-      console.log(order.items);
-      console.log(order.postalCode);
 
-    } catch (err) {
-      console.log(err)
+      }).catch(error => {
+        commit("updateCartUI", "failure");
+        throw error;
+      });
+
+    }catch (error) {
       commit("updateCartUI", "failure")
+      throw error;
     }
   }
 }
