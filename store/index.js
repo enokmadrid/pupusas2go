@@ -42,7 +42,7 @@ export const mutations = {
     state.customer = payload;
   },
   updateCartUI: (state, payload) => {
-    state.cartUIStatus = payload
+    state.cartUIStatus = payload;
   },
   clearCart: state => {
     //this clears the cart
@@ -55,11 +55,11 @@ export const mutations = {
       : state.cart.push(payload)
   },
   incrementQuantity: (state, payload) => {
-    let itemfound = state.cart.find(el => el.id === payload.id)
+    let itemfound = state.cart.find(el => el.id === payload.id);
     itemfound.quantity++
   },
   decrementQuantity: (state, payload) => {
-    let itemfound = state.cart.find(el => el.id === payload.id)
+    let itemfound = state.cart.find(el => el.id === payload.id);
     itemfound.quantity--
     if (itemfound.quantity < 0) {
       itemfound.quantity = 0;
@@ -69,13 +69,13 @@ export const mutations = {
 
 export const actions = {
   increment({ commit }) {
-    commit('incrementQuantity')
+    commit('incrementQuantity');
   },
   decrement({ commit }) {
-    commit('decrementQuantity')
+    commit('decrementQuantity');
   },
   emptyCart({ commit }) {
-    commit('clearCart')
+    commit('clearCart');
   },
   async nuxtServerInit({ commit }) {
     await axios.post(graphcmsEndpoint, {
@@ -87,9 +87,9 @@ export const actions = {
     });
   },
 
-  async postStripeFunction({ getters, commit }, payload) {
-    commit("updateCartUI", "loading")
-    let customer, order, orderItems = [];
+  async postStripeFunction({ getters, commit, dispatch }, payload) {
+    commit("updateCartUI", "loading");
+    let order, orderItems = [];
     
     function turnCartItemsToOrderItems(cartItems) {
       cartItems.forEach(i => {
@@ -101,7 +101,7 @@ export const actions = {
       return orderItems;
     }
 
-    const createNewOrderQuery = {
+    const newOrderQuery = {
       query: orderQuery,
       variables: {
         data: {
@@ -117,7 +117,7 @@ export const actions = {
       }
     }
     
-    console.log(createNewOrderQuery)
+    console.log(newOrderQuery);
 
 
     try {
@@ -139,13 +139,17 @@ export const actions = {
       await axios.post(netlifyFunction, stripeData, stripeHeaders)
       .then(res => {
         if (res.status === 200) {
-          commit("updateCartUI", "success")
-          setTimeout(() => commit("clearCart"), 5000)
+          commit("updateCartUI", "success");
+          setTimeout(() => commit("clearCart"), 5000);
         } else {
           commit("updateCartUI", "failure")
-          setTimeout(() => commit("updateCartUI", "idle"), 5000) // allow them to try again
+          setTimeout(() => commit("updateCartUI", "idle"), 5000); // allow them to try again
         }
         console.log(JSON.stringify(res, null, 2));
+
+        //TODO: Capture USER ID, and ORDER
+        console.log(JSON.stringify(res, "data", 2));
+
       }).catch(error => {
         commit("updateCartUI", "failure");
         throw error;
@@ -153,25 +157,33 @@ export const actions = {
 
 
       //TODO: CREATE THE ORDER
-      await axios.post( graphcmsEndpoint, createNewOrderQuery )
+      await axios.post( graphcmsEndpoint, newOrderQuery )
       .then(response => {
-        console.log(response.request.response)
+        console.log(response.request.response);
         order = JSON.parse(response.request.response).data.createOrder;
 
-        var newCustomer = {
-          name: order.customerName,
-          order: order.id
-        };
-        commit('setCustomer', newCustomer);
+        dispatch("createCustomer", order);
 
       }).catch(error => {
         commit("updateCartUI", "failure");
         throw error;
       });
 
-    }catch (error) {
-      commit("updateCartUI", "failure")
+    }
+    catch (error) {
+      commit("updateCartUI", "failure");
       throw error;
     }
+  },
+
+  createCustomer({commit}, order) {
+    var newCustomer = {
+      name: order.customerName,
+      order: order.id
+    };
+    commit("updateCartUI", "success");
+    commit('setCustomer', newCustomer);
+    return newCustomer;
   }
+
 }
