@@ -33,6 +33,7 @@ exports.handler = async (event, context) => {
 
   // stripe payment processing begins here
   try {
+    let receipt_url;
     await stripe.customers
       .create({
         name: data.stripeName,
@@ -61,7 +62,8 @@ exports.handler = async (event, context) => {
             }
           )
           .then(result => {
-            console.log(`Charge created: ${result}`)
+            console.log(result);
+            receipt_url = result;
           })
       })
 
@@ -69,7 +71,9 @@ exports.handler = async (event, context) => {
       statusCode: 200,
       headers,
       body: JSON.stringify({
-        status: "it works! beep boop"
+        status: "it works! beep boop",
+        customer: customer.id,
+        receipt: receipt_url
       })
     }
   } catch (err) {
