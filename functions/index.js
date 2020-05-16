@@ -64,12 +64,12 @@ exports.handler = async (event, context) => {
               description: "Sample Charge"
             },
             {
-              idempotency_key: data.stripeIdempotency
+              idempotencyKey: data.stripeIdempotency
             }
           )
           .then(result => {
             console.log(`Your new payment charge is: ${result}`);
-            receipt_url = JSON.parse(result);
+            receipt_url = result;
           })
       })
 
@@ -77,9 +77,7 @@ exports.handler = async (event, context) => {
       statusCode: 200,
       headers,
       body: JSON.stringify({
-        status: "it works! beep boop",
-        customer: newCustomer,
-        receipt: receipt_url
+        status: "it works! beep boop"
       })
     }
   } catch (err) {
