@@ -63,7 +63,7 @@ exports.handler = async (event, context) => {
               description: "Sample Charge"
             },
             {
-              idempotencyKey: data.stripeIdempotency
+              idempotency_key: data.stripeIdempotency
             }
           )
           .then(result => {
