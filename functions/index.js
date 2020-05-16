@@ -34,7 +34,7 @@ exports.handler = async (event, context) => {
   // stripe payment processing begins here
   try {
     let receipt_url;
-    let customer;
+    let newCustomer;
 
     await stripe.customers
       .create({
@@ -44,15 +44,15 @@ exports.handler = async (event, context) => {
         address: data.stripeAddress,
         source: data.stripeToken
       })
-      .then(result => {
+      .then(customer => {
         console.log(
           `starting the charges, amt: ${data.stripeAmt}, email: ${
             data.stripeEmail
           }`
         )
 
-        console.log(`Your New Customer is: ${JSON.parse(result)}`);
-        customer = JSON.parse(result);
+        console.log(`Your New Customer is: ${customer}`);
+        newCustomer = customer;
         
         return stripe.charges
           .create(
@@ -68,7 +68,7 @@ exports.handler = async (event, context) => {
             }
           )
           .then(result => {
-            console.log(`Your new payment charge is: ${JSON.parse(result)}`);
+            console.log(`Your new payment charge is: ${result}`);
             receipt_url = JSON.parse(result);
           })
       })
@@ -78,7 +78,7 @@ exports.handler = async (event, context) => {
       headers,
       body: JSON.stringify({
         status: "it works! beep boop",
-        customer: customer,
+        customer: newCustomer,
         receipt: receipt_url
       })
     }
