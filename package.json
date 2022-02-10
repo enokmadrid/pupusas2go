@@ -19,7 +19,7 @@
     "graphql": "^15.0.0",
     "graphql-tag": "^2.10.3",
     "gsap": "^3.2.6",
-    "node-sass": "^6.0.1",
+    "node-sass": "^7.0.0",
     "nuxt": "^2.0.0",
     "sass-loader": "^10.1.1",
     "stripe": "^8.46.0",
